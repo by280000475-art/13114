@@ -56,3 +56,9 @@ def test_task_crud_flow() -> None:
 
     missing = client.get(f"/tasks/{task_id}")
     assert missing.status_code == 404
+
+
+def test_index_page_available() -> None:
+    response = client.get("/")
+    assert response.status_code == 200
+    assert "个人任务管理系统" in response.text

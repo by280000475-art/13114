@@ -2,12 +2,20 @@ from datetime import date, datetime
 from typing import Optional
 
 from fastapi import Depends, FastAPI, HTTPException, Query
+from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 from sqlmodel import Session, select
 
 from .database import create_db_and_tables, get_session
 from .models import Task, TaskCreate, TaskPriority, TaskRead, TaskStatus, TaskUpdate
 
 app = FastAPI(title="Personal Task Manager", version="0.1.0")
+app.mount("/static", StaticFiles(directory="app/static"), name="static")
+
+
+@app.get("/")
+def index() -> FileResponse:
+    return FileResponse("app/static/index.html")
 
 
 @app.on_event("startup")
